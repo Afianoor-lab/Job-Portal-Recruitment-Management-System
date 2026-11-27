@@ -23,9 +23,11 @@ class CandidateProfile extends Model
         'experience',
     ];
 
-    // protected $casts = [
-       
-    // ];
+    protected $casts = [
+    'skills' => 'array',
+    'education' => 'array',
+    'experience' => 'array',
+    ];
 
     /**
      * Get the user that owns this candidate profile.

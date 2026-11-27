@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -60,6 +61,15 @@ class User extends Authenticatable
 public function tokens(): HasMany
 {
     return $this->hasMany(UserToken::class);
+}
+public function candidateProfile(): HasOne
+{
+    return $this->hasOne(CandidateProfile::class);
+}
+
+public function candidateCVs(): HasMany
+{
+    return $this->hasMany(CandidateCv::class,'candidate_id');
 }
 
 

@@ -2,8 +2,6 @@
 
 use App\Exceptions\ApiException;
 use App\Exceptions\InvalidCredentialsException;
-use App\Exceptions\PollException;
-use App\Http\Middleware\AuthToken;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
@@ -13,14 +11,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Http\Middleware\AuthToken;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: [
             __DIR__.'/../routes/Api/auth.php',
-            __DIR__.'/../routes/Api/aimodel.php',
+            __DIR__.'/../routes/Api/settings.php',
             __DIR__.'/../routes/Api/openrouter.php',
+            __DIR__.'/../routes/Api/candidate.php',
             
         ],
         commands: __DIR__.'/../routes/console.php',

@@ -15,8 +15,6 @@ Route::prefix('v1')->group(function () {
 Route::middleware('auth.token')->group(function () {
     Route::get('/user', [UserController::class, 'show']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
-    Route::post('/users/avatar', [ProfileController::class, 'updateAvatar']);
-    Route::get('/users/avatar', [ProfileController::class, 'show']);
     Route::put('/user/settings', [UserController::class, 'updateSettings']);
     Route::delete('/user', [UserController::class, 'destroy']);
     Route::delete('/settings/api-key', [UserController::class, 'deleteApiKey']);

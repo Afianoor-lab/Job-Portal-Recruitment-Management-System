@@ -4,17 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\InvalidCredentialsException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\InvitationRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\UserProfilePicRequest;
 use App\Http\Resources\RegistrationResource;
-use App\Http\Resources\UserResource;
-use App\Models\Company;
-use App\Models\EmailInvitation;
 use App\Models\PasswordReset;
 use App\Models\User;
-use App\Models\UserRoles;
 use App\Services\RegistrationService;
 use App\Services\TokenService;
 use Illuminate\Http\JsonResponse;
@@ -23,7 +17,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
+
 
 class AuthController extends Controller
 {
@@ -100,9 +94,8 @@ class AuthController extends Controller
      
         $token = $request->attributes->get('current_token');
         
-        if($token !== null){
+        if($token && $token!=='null'){
         $this->tokenService->revoke($token);
-         echo $token;
         }else{ $request->user()->update(['remember_token'=>null]);}
 
         return Response::success('Logged out successfully.');
@@ -147,48 +140,12 @@ class AuthController extends Controller
         $passtoken->update(['expires_at' => now() ]);
 
 
-         return Response::success(
-           'Password Reset successful.',[
-           'user' => new  RegistrationResource($user)],
-            200,
+        return Response::success(
+        'Password Reset successful.',[
+        'user' => new  RegistrationResource($user)],
+        200,
         );
     }
 
-
-    public function changePassword(Request $request)
-    {
-        $validated = $request->validate([
-            'old_password' => ['required', 'string'],
-            'new_password' => ['required', 'string', 'different:old_password', 
-            Password::min(8)
-             ->mixedCase()      // Requires at least one uppercase and one lowercase letter
-            ->numbers()        // Requires at least one number
-            ->symbols() ]       // Requires at least one special character],
-        ]);
-
-        $user = $request->user();
-
-        if (! $user || ! Hash::check($validated['old_password'], $user->password)) {
-            
-
-            return Response::error(
-           'Old password is incorrect.',
-            422,
-        );
-        }
-
-        $user->update([
-            'password' => Hash::make($validated['new_password']),
-        ]);
-         return Response::success(
-           'Password changed successful.',[
-           'user' => new  RegistrationResource($user)],
-            200,
-        );
-       
-    }
-
-
-   
 
 }

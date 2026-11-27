@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\InvitationController;
 use App\Http\Middleware\EmailLinkExpired;
-use App\Http\Middleware\EnsureEmailIsVerified;
+
 use App\Http\Middleware\PasswordResetLinkExpired;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::prefix('v1')->group(function () {
 
@@ -27,7 +28,7 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth.token')->group(function () {
         Route::post('/auth/logout', [AuthController::class, 'logout']);
-        Route::post('/change-password', [AuthController::class, 'changePassword']);
+       
 
     });
 });
